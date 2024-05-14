@@ -1,33 +1,41 @@
 
+import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author Adm
- */
 public class conectaDAO {
-    
-    public Connection connectDB(){
-        Connection conn = null;
-        
+
+    private Connection conexao;
+    private Statement st;
+
+    Connection conn = null;
+
+    public void conectar() throws SQLException {
         try {
-        
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/uc11?user=root&password=");
-            
-        } catch (SQLException erro){
-            JOptionPane.showMessageDialog(null, "Erro ConectaDAO" + erro.getMessage());
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conexao = DriverManager.getConnection("jdbc:mysql://localhost/uconze", "root", "Pandorasbox2015");
+
+            System.out.println("SUCESSO DE CONEXÃO!");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Falha ao carregar a classe de conexão!"); //Erro de java
+        } catch (SQLException ex) {
+            System.out.println("Falha ao conectar com o banco. Erro de SQL!"); //Erro de SQL
         }
-        return conn;
     }
-    
+
+    public void desconectar() {
+        try {
+            if (conexao != null && !conexao.isClosed()) {
+                conexao.close();
+                System.out.println("DESCONECTADO COM SUCESSO");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao desconectar");
+        }
+    }
+
 }
+
+
