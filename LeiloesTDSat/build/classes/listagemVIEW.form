@@ -149,7 +149,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextPane" name="id_produto_venda">
+        <Component class="javax.swing.JTextPane" name="txtId_produto_venda">
         </Component>
       </SubComponents>
     </Container>
