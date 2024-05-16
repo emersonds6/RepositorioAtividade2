@@ -137,6 +137,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+
         ProdutosDTO produto = new ProdutosDTO();
         conectaDAO dao = new conectaDAO();
         boolean status = false;
@@ -146,19 +147,19 @@ public class cadastroVIEW extends javax.swing.JFrame {
 
         try {
             produto.setValor(Integer.parseInt(txtCadastroValor.getText()));
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Valor inválido");
+          } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "valor inválido");
             txtCadastroValor.requestFocus();
             return;
         }
-
-        try {
+        
+        try{
             status = dao.conectar();
             if (!status) {
                 JOptionPane.showMessageDialog(null, "Erro de conexão");
             } else {
                 resposta = dao.salvar(produto);
-                if (resposta == 1) {
+                if (resposta ==1) {
                     JOptionPane.showMessageDialog(null, "Dados incluídos com sucesso");
                 } else {
                     JOptionPane.showMessageDialog(null, "Erro ao salvar dados");
@@ -169,11 +170,11 @@ public class cadastroVIEW extends javax.swing.JFrame {
         } finally {
             dao.desconectar();
         }
-
+        
         txtCadastroNome.setText("");
         txtCadastroValor.setText("");
         txtCadastroNome.requestFocus();
-    
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
@@ -196,28 +197,16 @@ public class cadastroVIEW extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

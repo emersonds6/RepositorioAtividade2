@@ -1,9 +1,11 @@
 
+import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class conectaDAO {
 
@@ -46,7 +48,7 @@ public class conectaDAO {
 
             st.setString(1, pdto.getNome());
             st.setInt(2, pdto.getValor());
-            
+
             return st.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Erro ao salvar: " + ex.getMessage());
@@ -62,27 +64,50 @@ public class conectaDAO {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public List<ProdutosDTO> consultar() {
+        List<ProdutosDTO> produtos = new ArrayList<>();
+        ResultSet rs = null;
+        PreparedStatement st = null;
 
-    public ProdutosDTO consultar(int id) {
-        String sql = "SELECT * FROM produtos WHERE id = ?";
-        try (PreparedStatement st = conexao.prepareStatement(sql)) {
-            st.setInt(1, id);
-            try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
-                    ProdutosDTO pdto = new ProdutosDTO();
-                    pdto.setId(rs.getInt(id));
-                    pdto.setNome(rs.getString("nome"));
-                    pdto.setValor(rs.getInt("valor"));
-                    
-                    return pdto;
-                } else {
-                    return null;
-                }
+        try {
+            if (conexao == null || conexao.isClosed()){
+            conexao = getConexao();
+        }
+            st = conexao.prepareStatement("SELECT * FROM produtos");
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(rs.getInt("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setValor(rs.getInt("valor"));
+                produto.setStatus(rs.getString("status"));
+                produtos.add(produto);
             }
         } catch (SQLException ex) {
-            System.out.println("Erro ao consultar: " + ex.getMessage());
-            return null;
+            System.out.println("Erro ao consultar produtos: " + ex.getMessage());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fechar ResultSet: " + ex.getMessage());
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fechar PreparedStatement: " + ex.getMessage());
+                }
+            }
         }
+        return produtos;
     }
 
     public boolean excluir(int id) {
